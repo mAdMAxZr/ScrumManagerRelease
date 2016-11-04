@@ -1,11 +1,11 @@
 <?php
 	// Information de la BDD
 	$hostGlob = 'localhost';
-	$bddGlob = 'test';
+	$bddGlob = 'scma';
 	$userGlob = 'root';
 	$passwdGlob = 'root';
 
 	// Noms des table
-	$TableUserGlob = "users";
-	$TableProjetGlob = "project";
-	$TableContribGlob = "Contributors";
+	$TableUserGlob = "Users";
+	$TableProjetGlob = "Project";
+	$TableContribGlob = "ContributorProject";
