@@ -41,7 +41,8 @@ CREATE_USERSTORY_TABLE="CREATE TABLE UserStory (id SMALLINT NOT NULL AUTO_INCREM
 						rank VARCHAR(32) NOT NULL,
 						action VARCHAR(32) NOT NULL,
 						goal VARCHAR(32) NOT NULL,
-						priority SMALLINT NOT NULL);"
+						priority SMALLINT,
+						difficulty SMALLINT NOT NULL);"
 
 CREATE_SPRINT_TABLE="CREATE TABLE Sprint (id SMALLINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 						number SMALLINT NOT NULL,
@@ -75,6 +76,14 @@ CREATE_CONTRIBUTORTASK_TABLE="CREATE TABLE ContributorTask (contributor SMALLINT
 							ON DELETE CASCADE,
 						PRIMARY KEY(contributor, Task));"
 
+CREATE_ANNEX_TABLE="CREATE TABLE Annexe (id SMALLINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+						project SMALLINT NOT NULL,
+						FOREIGN KEY (project)
+							REFERENCES Project(id)
+							ON DELETE CASCADE,
+						name VARCHAR(32) NOT NULL,
+						type VARCHAR(32) NOT NULL);"
+
 echo $CREATE_DATABASE > tmp.sql
 echo "USE scma;" >> tmp.sql
 echo $CREATE_USER_TABLE >> tmp.sql
@@ -84,6 +93,7 @@ echo $CREATE_SPRINT_TABLE >> tmp.sql
 echo $CREATE_TASK_TABLE >> tmp.sql
 echo $CREATE_CONTRIBUTORPROJECT_TABLE >> tmp.sql
 echo $CREATE_CONTRIBUTORTASK_TABLE >> tmp.sql
+echo $CREATE_ANNEX_TABLE >> tmp.sql
 
 mysql -u$db_user -p -h$db_host < tmp.sql
 

@@ -27,16 +27,18 @@ else{
 		{
 			?>
 			<!--- Affichage de chaque projet -->
-			<div class="panel panel-info">
-				<div class="panel-heading">
-					<h3 class="panel-title"><strong><?php echo $data[1]; ?></strong></h3>
-					<div class="panel-body">
-						<strong>ScrumMaster : </strong><?php $row = getUserByID($data[3]); echo $row[3]; ?> <br/>
-						<strong>ProductOwner : </strong><?php $row = getUserByID($data[3]); echo $row[3]; ?> <br/>
-						<strong>Description : </strong><?php echo $data[4]; ?> <br/>
+			<a style="text-decoration:none" href="ViewProject.php?projet=<?php echo $data[0];?>">
+				<div class="panel panel-info">
+					<div class="panel-heading">
+						<h3 class="panel-title"><strong><?php echo $data[1]; ?></strong></h3>
+						<div class="panel-body">
+							<strong>ScrumMaster : </strong><?php $row = getUserByID($data[3]); echo $row[3]; ?> <br/>
+							<strong>ProductOwner : </strong><?php $row = getUserByID($data[3]); echo $row[3]; ?> <br/>
+							<strong>Description : </strong><?php echo $data[4]; ?> <br/>
+						</div>
 					</div>
 				</div>
-			</div>
+			</a>
 			<?php
 		}
 }

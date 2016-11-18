@@ -64,11 +64,11 @@
 	 * @param  [int]  $idProjet [id du projet a tester]
 	 * @return boolean           [Renvois TRUE si l'utilisateur est le PO et FALSE sinon]
 	 */
-	function isPO($id){
+	function isPO($id,$idUser){
 		global $TableProjetGlob;
 		$idProjet = intval($id);
 		if(isConnected()){
-			$query = "SELECT ProductOwner FROM $TableProjetGlob WHERE $idProjet = id ";
+			$query = "SELECT ProductOwner FROM $TableProjetGlob WHERE $idProjet = id AND $idUser = productowner";
 			$result = launchQuery($query);
 			$row = mysqli_fetch_array($result,MYSQLI_NUM);
 				if($_SESSION['id'] == $row[0]){
@@ -111,5 +111,38 @@
 				return TRUE;
 			}
 		} 
+		return FALSE;
+	}
+
+	/**
+	 * [isContributor Permet de tester si l'utilisateur connecter est contribiteur d'un projet]
+	 * @param  [id]  $idProjet [id du projet a tester]
+	 * @param  [id]  $idUser [id du user a tester]
+	 * @return boolean           [Renvois TRUE si l'utilisateur est contributeur et FALSE sinon]
+	 */
+	function isContributor2($idProjet,$idUser){
+		global $TableContribGlob;
+		if(isConnected()){
+			$query = "SELECT * FROM $TableContribGlob WHERE $idProjet = Project AND $idUser = Contributor  ";
+			$result = launchQuery($query);
+			if(mysqli_num_rows($result)==1){
+				return TRUE;
+			}
+		} 
+		return FALSE;
+	}
+
+	/**
+	 * [addContributor Permet d'ajouter un contributeur à un projet]
+	 * @param [project] $idProjet [id du projet auquel on rajoute un contributeur]
+	 * @param [contributor] $idContributor [id du contributeur ajouté au projet]
+	 * @return boolean [retourne TRUE si l'ajout s'est bien déroulé]
+	*/
+	function addContributor($idProjet,$idContributor){
+		global $TableContribGlob;
+		if(isContributor($idProjet)){
+			$query = "INSERT INTO $TableContribGlob ( `contributor`, `project` ) VALUES ('$idContributor','$idProjet')";
+			return $result = launchQuery($query);
+		}
 		return FALSE;
 	}
