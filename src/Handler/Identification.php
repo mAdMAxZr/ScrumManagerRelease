@@ -6,10 +6,10 @@
 	$password = $_POST['password'];
 	
 	if(!empty($login) || !empty($password)){
-		printf("%s %s",$login,$password);
 		connectUser($login,$password);
 	}
 	
+	//redirection
 	$host  = $_SERVER['HTTP_HOST'];
 	$uri   = rtrim(dirname(dirname($_SERVER['PHP_SELF'])), '/\\');
 	$extra = '/View/ViewIndex.php';

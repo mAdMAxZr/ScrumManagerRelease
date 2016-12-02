@@ -10,4 +10,8 @@
 	$TableProjetGlob = "Project";
 	$TableContribGlob = "ContributorProject";
 	$TableAnnexeGlob = "Annexe";
-	$TableUSGlob = "UserStory";
+	$TableUSGlob = "UserStory"; 
+	$TableSprintglob = "Sprint";
+	$TableTaskGlob = "Task";
+	$TableContribTaskGlob = "ContributorTask";
+	$TableTracabGlob = "tracabilite";

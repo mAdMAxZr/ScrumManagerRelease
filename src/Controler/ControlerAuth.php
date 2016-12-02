@@ -64,9 +64,10 @@
 	 * @param  [int]  $idProjet [id du projet a tester]
 	 * @return boolean           [Renvois TRUE si l'utilisateur est le PO et FALSE sinon]
 	 */
-	function isPO($id,$idUser){
+	function isPO($id){
 		global $TableProjetGlob;
 		$idProjet = intval($id);
+		$idUser = $_SESSION['id'];
 		if(isConnected()){
 			$query = "SELECT ProductOwner FROM $TableProjetGlob WHERE $idProjet = id AND $idUser = productowner";
 			$result = launchQuery($query);
@@ -141,8 +142,10 @@
 	function addContributor($idProjet,$idContributor){
 		global $TableContribGlob;
 		if(isContributor($idProjet)){
-			$query = "INSERT INTO $TableContribGlob ( `contributor`, `project` ) VALUES ('$idContributor','$idProjet')";
+			$query = "INSERT INTO $TableContribGlob VALUES ('$idContributor','$idProjet')";
 			return $result = launchQuery($query);
 		}
 		return FALSE;
 	}
+
+	

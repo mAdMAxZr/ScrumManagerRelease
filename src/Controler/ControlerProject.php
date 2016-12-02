@@ -24,7 +24,16 @@
 			}
 			$idProject = getProjectByName($title)['id'];
 			$query = "INSERT INTO $TableContribGlob (`contributor`, `project`) VALUES ('$scrummaster','$idProject')";
-			return launchQuery($query);
+			$result = launchQuery($query);
+			if(!$result){
+				return false; 
+			}
+			if ($scrummaster == $productowner){
+				return true;
+			} else {
+				$query = "INSERT INTO $TableContribGlob (`contributor`, `project`) VALUES ('$productowner','$idProject')";
+				return launchQuery($query);
+			}
 		}
 		return false;
 	}
@@ -117,3 +126,28 @@
 		$result = launchQuery($query);
 		return $result;
 	}
+
+	/**
+	 * [getContribByProject Permet de récupéré tout les contributeur d'un projet]
+	 * @param  [int] $project [id du projet]
+	 * @return [MySqli_result]          [ensemble des contributeur du projet]
+	 */
+	function getContribByProject($project){
+		global $TableContribGlob;
+		$query = "SELECT * FROM $TableContribGlob WHERE project = $project";
+		return launchQuery($query);
+	}
+
+	/**
+	 * [removeContrib Permet de supprimer un contributeur d'un projet]
+	 * @param  [int] $UserId  [id de l'utilisateur]
+	 * @param  [int] $project [id du projet]
+	 * @return [boolean]          [Vrai si réussi, faux sinon]
+	 */
+	function removeContrib($UserId,$project){
+		global $TableContribGlob;
+		$query = $query="DELETE FROM $TableContribGlob WHERE project='$project' AND contributor='$UserId'";
+		$result = launchQuery($query);
+		return $result; 
+	}
+	

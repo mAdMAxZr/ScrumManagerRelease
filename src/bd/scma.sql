@@ -37,9 +37,9 @@ CREATE TABLE `Annexe` (
 -- Dumping data for table `Annex`
 --
 
-LOCK TABLES `Annex` WRITE;
-/*!40000 ALTER TABLE `Annex` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Annex` ENABLE KEYS */;
+LOCK TABLES `Annexe` WRITE;
+/*!40000 ALTER TABLE `Annexe` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Annexe` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -107,6 +107,7 @@ CREATE TABLE `Project` (
   `scrummaster` smallint(6) NOT NULL,
   `productowner` smallint(6) NOT NULL,
   `description` text,
+
   PRIMARY KEY (`id`),
   KEY `scrummaster` (`scrummaster`),
   KEY `productowner` (`productowner`),
@@ -137,7 +138,8 @@ CREATE TABLE `Sprint` (
   `project` smallint(6) NOT NULL,
   `start` date NOT NULL,
   `end` date NOT NULL,
-  PRIMARY KEY (`id`),
+  `state` text,
+  PRIMARY KEY (`id`,`project`,`number`),
   KEY `project` (`project`),
   CONSTRAINT `Sprint_ibfk_1` FOREIGN KEY (`project`) REFERENCES `Project` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -164,13 +166,13 @@ CREATE TABLE `Task` (
   `project` smallint(6) NOT NULL,
   `description` text,
   `effort` smallint(6) DEFAULT NULL,
-  `sprint` smallint(6) DEFAULT NULL,
+  `userstory` smallint(6) DEFAULT NULL,
   `state` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `project` (`project`),
-  KEY `sprint` (`sprint`),
+  KEY `userstory` (`userstory`),
   CONSTRAINT `Task_ibfk_1` FOREIGN KEY (`project`) REFERENCES `Project` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `Task_ibfk_2` FOREIGN KEY (`sprint`) REFERENCES `Sprint` (`id`) ON DELETE CASCADE
+  CONSTRAINT `Task_ibfk_2` FOREIGN KEY (`userstory`) REFERENCES `UserStory` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -193,14 +195,16 @@ DROP TABLE IF EXISTS `UserStory`;
 CREATE TABLE `UserStory` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT,
   `project` smallint(6) NOT NULL,
+  `sprint` smallint(6) NOT NULL,
   `rank` varchar(32) NOT NULL,
   `action` varchar(32) NOT NULL,
   `goal` varchar(32) NOT NULL,
-  `priority` smallint(6) ,
+  `priority` smallint(6),
   `difficulty` smallint(6) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `project` (`project`),
-  CONSTRAINT `UserStory_ibfk_1` FOREIGN KEY (`project`) REFERENCES `Project` (`id`) ON DELETE CASCADE
+  CONSTRAINT `UserStory_ibfk_1` FOREIGN KEY (`project`) REFERENCES `Project` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `UserStory_ibfk_2` FOREIGN KEY (`sprint`) REFERENCES `Sprint` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -214,7 +218,24 @@ LOCK TABLES `UserStory` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `Users`
+-- Tabke structure for table `tracabilite`
+--
+
+DROP TABLE IF EXISTS `tracabilite`
+
+CREATE TABLE `tracabilite` (
+  `projet` smallint(6) NOT NULL,
+  `sprint` smallint(6) NOT NULL,
+  `commit` varchar(64) NOT NULL,
+  `link`   varchar(64) NOT NULL,
+  PRIMARY KEY (`projet`,`sprint`),
+  CONSTRAINT `tracab_ibfk_1` FOREIGN KEY (`project`) REFERENCES `Project` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `tracab_ibfk_2` FOREIGN KEY (`sprint`) REFERENCES `Sprint` (`id`) ON DELETE CASCADE
+  )ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table 
 --
 
 DROP TABLE IF EXISTS `Users`;
@@ -250,3 +271,6 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2016-11-09 22:18:37
+
+
+
